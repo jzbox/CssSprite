@@ -1,7 +1,6 @@
 # CssSprite
--
-一、简述作用
 
+### 一、简述作用<br />
 使用compass的sprite方法进行图片的合并，通过固定的配置代码，方便地进行sprite图的生成。
 
 二、setting.scss文件的固定设置
