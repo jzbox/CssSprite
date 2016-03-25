@@ -1,13 +1,10 @@
 # CssSprite
 
-### 一、简述作用
+### 一、简述作用<br />
 
 使用compass的sprite方法进行图片的合并，通过固定的配置代码，方便地进行sprite图的生成。
 
-二、setting.scss文件的固定设置
---
-
-二、setting.scss文件的固定设置
+### 二、setting.scss文件的固定设置<br />
 
     @charset "utf-8";
     // 配置sprite间距
@@ -20,6 +17,7 @@
     //$setting-position: 0px;
     // 自动输出尺寸
     $setting-sprite-dimensions: true;
+    
     @import "compass/css3";
     @import "compass/utilities/sprites";
     @import "setting/*.png";
