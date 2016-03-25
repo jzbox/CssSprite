@@ -11,7 +11,7 @@
     $setting-spacing: 10px;
     
     // 配置sprite的布局方式：horizontal/vertical/smart
-    $setting-layout: vertical;
+    $setting-layout: horizontal;
     
     // 设置false不自动清除过期的sprite
     $setting-clean-up: false;
@@ -27,4 +27,8 @@
     @import "setting/*.png";
     @include all-setting-sprites;
 
-### 三、<br />
+### 三、使用操作<br />
+通过改变配置sprite的布局方式，生成水平排列和垂直排列的图片。（将所有水平图片垂直排列合并效果最佳）<br />
+
+
+
