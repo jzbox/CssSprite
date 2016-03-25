@@ -1,5 +1,5 @@
 # CssSprite
-=
+-
 一、简述作用
 
 使用compass的sprite方法进行图片的合并，通过固定的配置代码，方便地进行sprite图的生成。
