@@ -1,0 +1,6 @@
+安装
+Compass是用Ruby语言开发的，所以安装它之前，必须安装Ruby。
+假定你的机器（Linux或OS X）已经安装好Ruby，那么在命令行模式下键入：
+sudo gem install compass
+如果你用的是Windows系统，那么要省略前面的sudo。
+正常情况下，Compass就安装好了。

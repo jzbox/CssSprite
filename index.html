@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>合并图片工具</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<style>
+body{margin:0;font-family:"Microsoft Yahei",sans-serif;font-size:14px;}
+ul{margin:0;padding:0;list-style:none;}
+dl,dd{margin:0;}
+a{text-decoration:none;outline:none;color:#333;}
+a:link,a:visited,a:hover,a:active{text-decoration:none;}
+img{border:0;}
+input,button,select{margin:0;padding:0;border:0;outline:0;background:transparent;}
+p{margin:0;}
+/*公共渐变*/
+.btn-gradient{background:#0088cc;background:-webkit-linear-gradient(top,#0088cc 0%,#0055cc 100%);background:linear-gradient(to bottom,#0088cc 0%,#0055cc 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#0088cc',endColorstr='#0055cc',GradientType=0);}
+.btn-gradient-green{background:#62c462;background:-webkit-linear-gradient(top,#62c462 0%,#51a351 100%);background:linear-gradient(to bottom,#62c462 0%,#51a351 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#62c462',endColorstr='#51a351',GradientType=0);}
+/*页面主体*/
+.wrapper .part-header{position:relative;width:100%;height:50px;line-height:50px;background:#eee;z-index:9;}
+.wrapper .part-nav{position:relative;margin-right:300px;}
+.wrapper .part-title{margin-right:10px;padding-left:10px;font:700 20px "Microsoft Yahei";}
+.wrapper .part-new{display:inline-block;margin-left:30px;width:80px;height:50px;text-align:center;cursor:pointer;}
+.wrapper .part-new:hover{background:#fff;color:#0077cc;}
+.wrapper .part-tab{display:inline-block;}
+.wrapper .part-tab .tab-list{display:inline-block;width:80px;height:50px;text-align:center;cursor:pointer;}
+.wrapper .part-tab .tab-list:hover{background:#fff;color:#0077cc;}
+.wrapper .part-tab .case{background:#fff;color:#0077cc;}
+.wrapper .part-upload{position:absolute;top:0;right:0;padding:0 15px;cursor:pointer;}
+.wrapper .part-upload .upload-file{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;}
+.wrapper .part-upload .icon-upload{display:inline-block;margin-right:2px;width:20px;height:20px;vertical-align:middle;fill:#333;}
+.wrapper .part-upload:hover{color:#0077cc;}
+.wrapper .part-upload:hover .icon-upload{fill:#0077cc;}
+.wrapper .part-setting{position:absolute;top:0;right:0;width:300px;}
+.wrapper .part-setting:before{content:'';position:absolute;top:10px;left:0;width:1px;height:30px;background:#d6d6d6;}
+.wrapper .part-setting .part-title{padding-left:15px;}
+.wrapper .part-setting .part-explain{float:right;margin-right:10px;font-size:12px;cursor:pointer;}
+.wrapper .part-setting .part-explain:hover{color:#0077cc;}
+/*功能栏*/
+.wrapper .part-tool{position:absolute;top:0;right:0;padding:0 15px;width:270px;height:100%;font-size:14px;z-index:2;}
+.wrapper .part-tool .tool-main{padding-bottom:1px;background:#fff;}
+.wrapper .part-tool .tool-item{margin-bottom:40px;padding-top:80px;}
+.wrapper .part-tool .tool-list{position:relative;margin-bottom:25px;}
+.wrapper .part-tool .tool-title{display:inline-block;font-family:"SimSun";}
+.wrapper .part-tool .tool-file{position:relative;margin-top:10px;border:1px solid #ccc;height:28px;line-height:28px;border-radius:5px;overflow:hidden;}
+.wrapper .part-tool .btn-file{position:absolute;top:0;right:0;width:80px;font-size:12px;font-family:"SimSun";text-align:center;color:#fff;cursor:pointer;}
+.wrapper .part-tool .btn-file:hover{opacity:.95;}
+.wrapper .part-tool .input-file{position:absolute;top:0;right:0;width:100%;height:100%;opacity:0;z-index:2;}
+.wrapper .part-tool .text-file{margin:0 85px 0 5px;color:#666;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.wrapper .part-tool .layout-tab{overflow:hidden;margin:10px 0 40px;height:32px;line-height:30px;border-radius:5px;font-size:0;color:#fff;}
+.wrapper .part-tool .layout-tab dd{display:inline-block;border-right:1px solid rgba(255,255,255,0.2);width:89px;font-size:12px;text-align:center;cursor:pointer;}
+.wrapper .part-tool .layout-tab dd:last-child{border-right:0;}
+.wrapper .part-tool .layout-tab .case{background:#0055cc;box-shadow:inset 0 2px 4px 2px rgba(0,0,0,.1);}
+.wrapper .part-tool .tool-space{position:absolute;top:50%;right:0;margin-top:-15px;border:1px solid #ccc;width:70px;height:28px;line-height:28px;border-radius:5px;vertical-align:middle;}
+.wrapper .part-tool .tool-space input{width:100%;text-align:center;}
+.wrapper .part-tool .tool-switch{position:absolute;top:50%;right:0;margin-top:-12px;width:40px;height:24px;border-radius:24px;background:#0077cc;box-shadow:inset 0 1px 2px 0 rgba(0,0,0,.2);cursor:pointer;-webkit-transition:all .2s ease;transition:all .2s ease;}
+.wrapper .part-tool .tool-switch .icon-switch{position:absolute;top:0;right:0;border:1px solid #0077cc;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 2px 0 rgba(0,0,0,.1);-webkit-transition:all .2s ease;transition:all .2s ease;}
+.wrapper .part-tool .on{background:#0077cc;}
+.wrapper .part-tool .on .icon-switch{right:0;border-color:#0077cc;}
+.wrapper .part-tool .off{background:#eee;}
+.wrapper .part-tool .off .icon-switch{right:15px;border-color:#eee;}
+.wrapper .part-tool .tool-generate,.wrapper .part-tool .tool-download{margin:0 auto 15px;width:195px;height:42px;font:16px/40px "Microsoft Yahei";text-align:center;color:#fff;border-radius:5px;cursor:pointer;}
+.wrapper .part-tool .tool-generate:hover,.wrapper .part-tool .tool-download:hover{opacity:.95;}
+.wrapper .part-tool .icon-download{display:inline-block;margin-top:-2px;margin-right:2px;width:20px;height:20px;vertical-align:middle;}
+.wrapper .part-tool .tool-link{position:absolute;bottom:20px;left:50%;margin-left:-102px;z-index:-1;}
+.wrapper .part-tool .link-text{margin-bottom:5px;}
+.wrapper .part-tool .link-text a{color:#0077cc;text-decoration:underline;}
+/*展示区域*/
+.wrapper .part-switch{margin-right:300px;padding:10px;}
+.wrapper .part-show{position:relative;overflow:auto;border:10px solid #b8e1f8;height:100%;background:#c6ebff url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQAgMAAADzfxo+AAAADFBMVEX///////////8AAAD1GyhhAAAABHRSTlMoNhsAX8Wz8wAAAC5JREFUOMtjCMUCGOr///7/fz8qMWQEs1YtWrVKC5UY9dGoj0Z9NOqjUR8NckEAV3eSqNB2GKwAAAAASUVORK5CYII=") repeat 0 0;}
+.wrapper .part-show::-webkit-scrollbar{width:7px;height:7px;background-color:transparent;}
+.wrapper .part-show::-webkit-scrollbar-thumb{width:7px;height:7px;background-color:#82c2e6;border-radius:7px;}
+.wrapper .part-show img{vertical-align: top;}
+/*使用说明*/
+.part-mask{position:fixed;top:0;bottom:0;left:0;right:0;background:rgba(255,255,255,0.6);z-index:99;display:none;}
+.part-layer{position:fixed;top:50%;left:50%;overflow:hidden;min-width:50%;min-height:50%;background:#fff;border-radius:8px;-webkit-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);transform:translate(-50%,-50%);z-index:100;box-shadow:0 1px 2px 0 rgba(0,0,0,.2);display:none;}
+.wrapper .explain-box{padding:20px;}
+.wrapper .explain-box p{margin-bottom:10px;font-size:16px;}
+.wrapper .explain-box .explain-title{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #ddd;font-size:24px;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+	<form>
+	<!--导航栏-->
+	<div class="part-header">
+		<div class="part-nav">
+			<span class="part-title">CssSprite</span>
+			<span class="part-new">New</span>
+			<ul class="part-tab">
+				<li class="tab-list case">Sprite</li>
+				<li class="tab-list">Css</li>
+			</ul>
+			<span class="part-upload"><input type="file" multiple class="upload-file" accept="image/png" /><svg class="icon-upload"><path d="M4.18 15h11.641v1.68h-11.641v-1.68zM7.5 13.32v-5h-3.32l5.82-5.82 5.82 5.82h-3.32v5h-5z"></path></svg>Upload Images</span>
+		</div>
+		<div class="part-setting">
+			<span class="part-title">Settings</span>
+			<span class="part-explain">使用说明</span>
+		</div>
+	</div>
+	<!--功能栏-->
+	<div class="part-tool">
+		<div class="tool-main">
+			<ul class="tool-item">
+				<li class="tool-list">
+					<span class="tool-title">设置图片保存路径：</span>
+					<div class="tool-file">
+						<div class="btn-file btn-gradient"><input type="file" class="input-file" />选择路径</div>
+						<div class="text-file">C:\Users\Administrator\Desktop\box</div>
+					</div>
+				</li>
+				<li class="tool-list">
+					<span class="tool-title">设置布局方式：</span>
+					<dl class="layout-tab btn-gradient">
+						<dd class="case">Horizontal</dd>
+						<dd>Vertical</dd>
+						<dd>Compact</dd>
+					</dl>
+				</li>
+				<li class="tool-list">
+					<span class="tool-title">设置间距：</span>
+					<div class="tool-space"><input type="text" value="10" /></div>
+				</li>
+				<li class="tool-list">
+					<span class="tool-title">自动清除过期图片：</span>
+					<span class="tool-switch on"><i class="icon-switch"></i></span>
+				</li>
+				<li class="tool-list">
+					<span class="tool-title">是否输出CSS样式：</span>
+					<span class="tool-switch on"><i class="icon-switch"></i></span>
+				</li>
+			</ul>
+			<div class="tool-generate btn-gradient">Generate Sprite</div>
+			<div class="tool-download btn-gradient-green"><svg class="icon-download"><path fill="#fff" d="M4.18 15h11.641v1.68h-11.641v-1.68zM15.82 7.5l-5.82 5.82-5.82-5.82h3.32v-5h5v5h3.32z"></path></svg>Downloads</div>
+		</div>
+		<!--外链-->
+		<div class="tool-link">
+			<div class="link-text">背景定位：<a href="http://www.spritecow.com/" target="_blank">www.spritecow.com</a></div>
+			<div class="link-text">图片压缩：<a href="https://tinypng.com" target="_blank">https://tinypng.com</a></div>
+		</div>
+	</div>
+	<!--功能栏End-->
+	</form>
+	<!--展示区域-->
+	<div class="part-switch">
+		<div class="part-show" id="dropBox" ondrop = "dropFile(event)" ondragenter = "return false" ondragover = "return false">
+<!--			<img src="images/part-icon.png" />-->
+		</div>
+	</div>
+	<div class="part-switch" style="display:none;">
+		<div class="part-show">
+			<pre>
+.setting-sprite, .setting-d1, .setting-d2, .setting-d3 {
+  background-image: url('../images/setting-sb2b7365aa9.png');
+  background-repeat: no-repeat;
+}
+
+.setting-d1 {
+  background-position: 0 0;
+  height: 48px;
+  width: 48px;
+}
+
+.setting-d2 {
+  background-position: -58px 0;
+  height: 48px;
+  width: 48px;
+}
+
+.setting-d3 {
+  background-position: -116px 0;
+  height: 48px;
+  width: 48px;
+}
+			</pre>
+		</div>
+	</div>
+	<!--展示区域End-->
+	<!--使用说明弹出框-->
+	<div class="part-mask"></div>
+	<div class="part-layer">
+		<div class="explain-box">
+			<p class="explain-title">使用说明</p>
+			<p>1、只支持合并.png格式图片；</p>
+			<p>2、合并元素按命名顺序排列（以纯数字命名）；</p>
+			<p>3、合并时，先将同类型图片水平排列，最后将所有水平图片垂直排列合并效果最佳；</p>
+			<p>4、"背景定位"和"图片压缩"链接是之后编写样式、优化图片时方便使用的在线工具。</p>
+		</div>
+	</div>
+	<!--使用说明弹出框End-->
+</div>
+<script src="http://file2.ci123.com/ast/js/jquery_172.js"></script>
+<script>
+$(function(){
+	// 展示区域自适应高度
+    subHeight();
+    $(window).on("resize",function(){
+        subHeight();
+    });
+	
+	// 展示区域切换
+	$('.part-switch').hide().eq(0).show();
+	$('.part-tab li').click(function(){
+		$(this).addClass('case').siblings().removeClass('case');
+		var i=$('.part-tab li').index($(this));
+		$('.part-switch').hide().eq(i).show();
+	})
+	$('.part-new').click(function(){
+		$('.part-switch').hide().eq(0).show();
+		$('.part-tab li').eq(0).addClass('case').siblings().removeClass('case');
+	})
+	
+	// 布局方式切换
+	$('.layout-tab dd').click(function(){
+		$(this).addClass('case').siblings().removeClass('case');
+		var i=$('.layout-tab dd').index($(this));
+	})
+	
+	// 开关切换
+	$('.tool-switch').toggle(function(){
+		$(this).removeClass('on').addClass('off');
+	},function(){
+		$(this).removeClass('off').addClass('on');
+	})
+	
+	// 使用说明弹出框
+	$('.part-explain').click(function(){
+		$('.part-mask').fadeIn();
+		$('.part-layer').fadeIn();
+	})
+	$('.part-mask').click(function(){
+		$('.part-mask').fadeOut();
+		$('.part-layer').fadeOut();
+	})
+})
+// 展示区域自适应高度
+function subHeight(){
+	var vh = $(window).height();
+	$(".part-switch").height(vh - 90);
+}
+</script>
+<!--拖拽上传图片-->
+<!--
+<script>
+$(function(){
+	// 阻止浏览器默认行为
+	$(document).on({
+		dragleave:function(e){
+			e.preventDefault();
+		},
+		dragenter:function(e){
+			e.preventDefault();
+		},
+		dragover:function(e){
+			e.preventDefault();
+		},
+		drop:function(e){
+			e.preventDefault();
+		}
+	});
+	
+	var box = document.getElementById('dropBox');
+	box.addEventListener("drop",function(e){
+		e.preventDefault();
+		var file_list = e.dataTransfer.files;
+		if(file_list.length == 0){
+			return false;
+		}
+		if(file_list[0] == file_list[1]){
+            alert('这张图片已上传！');
+            return false;
+        }
+		if(file_list[0].type.indexOf('image') === -1){
+            alert('您拖的不是图片！');
+            return false;
+        }
+		
+		var img_src = window.URL.createObjectURL(file_list);
+		var filename = file_list[0].name;
+		var str_html = "<img src='" + img_src + "' />";
+		$("#dropBox").append(str_html);
+		
+		// 上传图片
+		xml_http = new XMLHttpRequest();
+		xml_http.open("post", "upload.php", true);
+        xml_http.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+		
+		var fd = new FormData();
+		fd.append('picfile', file_list[0]);
+		
+		xml_http.send(fd);
+	},false);
+})
+</script>
+-->
+<script>
+var fileUploadPreview = function (aFile) {
+	if (typeof FileReader == "undefined") {
+		alert("浏览器不支持");
+	}
+	var i;
+	for (i = 0; i < aFile.length; i++) {
+		var tmp = aFile[i];
+		var reader = new FileReader();
+		reader.readAsDataURL(tmp);
+		console.log(reader.readAsDataURL(tmp));
+		reader.onload = (function (f) {
+			return function (e) {
+				document.getElementById("dropBox").innerHTML += "<img src=\""+e.target.result+"\" title=\""+f.name+"\">";
+			}
+		})(tmp)
+	}
+}
+
+var dropFile = function (e) {
+	fileUploadPreview(e.dataTransfer.files);
+	e.stopPropagation();
+	e.preventDefault();
+}
+</script>
+</body>
+</html>

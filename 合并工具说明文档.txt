@@ -1,0 +1,41 @@
+【New】
+清空“images/settings”文件夹里上传的图片
+以及清除生成的图片和样式，执行编译语句“compass clean”
+清除HTML代码中<div class="part-show">里的内容
+
+【Sprite】
+展示生成后的图片，路径在images根目录
+
+【Css】
+展示生成的CSS代码
+
+【Upload Images】
+批量上传图片，上传到“images/settings”文件夹。
+上传时先将图片命名，合并元素按命名顺序排列
+
+【设置图片保存路径】
+选择本地路径，方便保存生成的图片
+
+【设置布局方式】
+默认为水平“Horizontal”，切换后替换“settings.scss”文件中“$setting-layout”的值
+
+【设置间距】
+默认值为10，一般不需要改动
+
+【自动清除过期图片】
+scss文件中“$setting-clean-up”的布尔值，默认为true
+
+【是否输出CSS样式】
+默认为输出。如果关闭，将scss文件中“@include all-setting-sprites;”注释掉即可
+
+【Generate Sprite】
+点击执行编译，编译语句“compass compile”
+
+【Downloads】
+将生成的图片下载到指定的本地路径中，并清除“images/settings”文件夹的图片
+
+【使用说明】弹出框内容
+1、只支持合并.png格式图片；
+2、合并元素按命名顺序排列；
+3、合并时，先将同类型图片水平排列，最后将所有水平图片垂直排列合并效果最佳；
+4、“背景定位”和“图片压缩”是之后编写样式、优化图片时方便使用的在线工具。
