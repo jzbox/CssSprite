@@ -9,12 +9,16 @@
     @charset "utf-8";
     // 配置sprite间距
     $setting-spacing: 10px;
+    
     // 配置sprite的布局方式：horizontal/vertical/smart
     $setting-layout: vertical;
+    
     // 设置false不自动清除过期的sprite
     $setting-clean-up: false;
+    
     // 配置sprite的位置
     //$setting-position: 0px;
+    
     // 自动输出尺寸
     $setting-sprite-dimensions: true;
     
@@ -22,3 +26,5 @@
     @import "compass/utilities/sprites";
     @import "setting/*.png";
     @include all-setting-sprites;
+
+### 三、<br />
